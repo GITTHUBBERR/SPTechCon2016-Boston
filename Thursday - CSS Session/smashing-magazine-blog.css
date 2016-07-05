@@ -1,0 +1,858 @@
+/* The MIT License (MIT)
+
+Copyright (c) 2016, Lumen Novus Incorporated d/b/a SharePoint Experience
+http://sharepointexperience.com/
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+/* CSS to rebrand an on-premises SharePoint 2013 site that is using seattle.master.  Can be used for Office365 SharePoint version 2013 if modifications are added to rebrand the Suite Bar area. */
+
+/* NOTES
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+Design inspired by https://www.smashingmagazine.com - use only for educational purposes.  Don't copy this design!  It doesn't belong to you or me.  :)  
+
+OOTB = Out-of-the-box
+*/
+
+/* TABLE OF CONTENTS  
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+/* WEB FONTS
+/* LAYOUT & OVERALL PAGE
+/* SHARED FONT PROPERTIES
+/* RIBBON & SUITE BAR
+/* HEADER
+/* NAVIGATION (TOP NAV BAR)
+/* NAVIGATION (TOP NAV BAR) - DROP DOWN MENU
+/* SEARCH
+/* NAVIGATION (BLOG CATEGORIES) 
+/* RIGHT WEB PART ZONE
+/* BLOG POST
+/* SOCIAL LINKS
+/* RESPONSIVE DESIGN
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+
+
+/* WEB FONTS
+For SharePoint Online only:  Web fonts must be saved locally, for example in a folder within the Style Library. See @font-face code sample below.
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Google Web Fonts are free.  https://www.google.com/fonts  */
+@import url(https://fonts.googleapis.com/css?family=Poppins:300|Suez+One|Belgrano);
+
+/* Font Awesome is a free font. http://fontawesome.io  */
+@import "//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css";
+
+/* Demo of using @font-face and is not needed in this design 
+@font-face {
+	font-family: 'fontello';
+	src: url('http://classcdn.s3.amazonaws.com/fonts/fontello-buzzfeed/fontello.eot?33146282');
+	src: url('http://classcdn.s3.amazonaws.com/fonts/fontello-buzzfeed/fontello.eot?33146282#iefix') format('embedded-opentype'),
+	       url('http://classcdn.s3.amazonaws.com/fonts/fontello-buzzfeed/fontello.woff?33146282') format('woff'),
+	       url('http://classcdn.s3.amazonaws.com/fonts/fontello-buzzfeed/fontello.ttf?33146282') format('truetype'),
+	       url('http://classcdn.s3.amazonaws.com/fonts/fontello-buzzfeed/fontello.svg?33146282#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}  */
+
+
+
+/* LAYOUT  & OVERALL PAGE
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Hide unnecessary page elements */
+	#suiteBarLeft,  /*Suite Bar Left (SharePoint text and links) */
+	#ms-help,  /* Help icon  */ 
+	#fullscreenmodebox,  /* Focus on Content icon */
+	#siteIcon,  /* Image set as SharePoint site logo in Settings */ 
+	#pageTitle, /* Page title */
+	#sideNavBox .ms-webpart-zone > div + div, /* Any web part after post category nav */
+	.ms-core-listMenu-verticalBox ul.static .ms-blog-quickLinksTitle, /* Categories header in Blog category nav */
+	.ms-core-listMenu-verticalBox ul.static + ul.static, /* 'Add a Category' option in Blog category nav */
+	.ms-blog-commandSpace li:last-child /* Edit blog post link */ {
+		display: none;
+	}
+	#RibbonContainer-TabRowRight /* Share, Follow, Edit links */ {
+		display: none !important; /* !important needed to override SharePoint inline style */
+	}
+
+/* Add background image - warning this image will not scroll with the page */
+	body.ms-backgroundImage {
+		background: url("http://classcdn.s3.amazonaws.com/images/smashmag-smbg.png");
+	}
+
+/* Remove OOTB color overlay added by SharePoint */
+	.ms-core-overlay {
+		background: transparent;
+	}
+
+/* Body content area - includes all web part zones */
+	#contentRow {
+		background: #fff;
+		width: 62.4%;
+		border-radius: 0 10px 10px 0;
+		box-shadow: 1px -1px 5px rgba(0,0,0,.1);
+		margin-left: 1%;
+		padding-top: 60px;
+		box-sizing: border-box;
+	}
+
+/* Nested body content area - child of #contentRow */
+	#contentBox {
+		margin-left: 190px;
+		min-width: 400px;
+	}
+
+/* Far right web part zone for supplemental blog web parts */
+	.ms-blog-LeftColumn {
+		position: absolute;
+		width: 36%;
+		box-sizing: border-box;
+		right: .5rem;
+	}
+
+
+
+/* SHARED FONT PROPERTIES
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Sans-serif */
+	.ms-breadcrumb-box + div:before, /* Text added before search */
+	.ms-srch-sb > input, /* Search form input */
+	.ms-srch-sb-searchLink:after, /* Added search text on button */
+	.ms-breadcrumb-top .ms-core-listMenu-horizontalBox ul.root ul.static > li > a, /* Global navigation items */
+	.ms-blog-listMenu-root, /* Blog category nav */
+	.ms-blog-postBody,  /* Post container */
+	.ms-blog-postList h1 a:after, /* Read More link after post teaser */
+	.ms-blog-postList h1 + div, /* Blog post date */
+	.ms-blog-postBody ~ .ms-metadata,
+	.ms-blog-postBody ~ .ms-blog-commandSpace, /* Blog metadata */
+	.ms-blog-commandSpace .ms-secondaryCommandLink, /* Blog metadata */
+	.ms-blog-commandSpace .ms-secondaryCommandLink:link, /* Blog metadata */
+	.ms-blog-commandSpace .ms-secondaryCommandLink:visited, /* Blog metadata */ 
+	#blgcat /* Post tags */ {
+		font-family: 'Poppins', sans-serif;
+		font-weight: 300;
+	}
+
+/* Serif */
+	.ms-blog-postList h1 a, /* Post Title Text */
+	.ms-blog-postBody .ms-rteStyle-Accent2, /* Call out text in first section of post */ 
+	.ms-blog-postBody ~ .ms-metadata > span > span /* Byline container */ {
+		font-family: 'Belgrano', serif;
+	}
+
+/* Light gray */
+	.ms-breadcrumb-box + div:before, /* Text added before search */
+	.ms-srch-sb > input /* Search form input */ {
+		color: #B5B5B5;
+	}
+
+/* Text size 1 */
+	.ms-breadcrumb-box + div:before, /* Text added before search */ 
+	.ms-srch-sb > input, /* Search form input */
+	.ms-blog-listMenu-root, /* Blog category nav */
+	.ms-blog-postList h1 a:after /* Read More link after post teaser */ {
+		font-size: .9rem;
+	}
+
+/* Text size 2 */
+	.ms-srch-sb-searchLink:after, /* Added search text on button */
+	.ms-blog-postBody .ms-rteStyle-Accent2, /* Call out text in first section of post */ 
+	.ms-blog-postList h1 + div, /* Blog post date */
+	#blgcat /* Post tags */ {
+		font-size: 1rem;
+	}
+
+/* Text size 3 */
+	.ms-blog-postBody /* Post container */ {
+		font-size: 1.1em;
+	}
+
+
+/* RIBBON & SUITE BAR
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Reduce height of area to minimum required */
+	#suiteBar {
+		height: auto;
+	}
+
+/* Ribbon background and border */
+	.ms-cui-topBar2 {
+		background: #000;
+		border-bottom: 1px solid #666;
+	} 
+	.ms-cui-topBar2,
+	.ms-cui-topBar2.ms-browseTabContainer {
+		border-bottom: 1px solid #666;
+	} 
+
+/* Move Suite Bar Right (Sign In/Welcome/Site Actions) back to right side after hiding Suite Bar Left */
+	#suiteBarRight {
+		position: absolute; 
+		right: 10px;
+		background: transparent;  
+		top: 3px;
+		z-index: 2;
+	}
+
+
+
+/* HEADER  
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Wrapper for container for global nav and search */
+	#s4-titlerow {
+		padding-top: 0; /* Remove OOTB padding */
+	}
+
+/* Wrapper around site logo wrapper */
+	#titleAreaBox {
+		margin: auto 1%;
+		width: 98%;
+		box-sizing: border-box;
+	}
+
+/* Container for global nav and search */
+	#titleAreaRow {
+		width: 100%;
+		display: block;
+	}
+
+/* Wrapper for global nav */
+	.ms-breadcrumb-box.ms-tableCell {
+		width: 65%;
+		display: inline-block;
+	}
+
+
+
+/* NAVIGATION (TOP NAV BAR) 
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Convert first navigation item in global nav to a logo */
+	.ms-breadcrumb-top .ms-core-listMenu-horizontalBox ul.root > li.static:first-child > a {
+		background: white url("http://classcdn.s3.amazonaws.com/images/smashmag-sm-logo-lg.png") no-repeat center;
+		display: inline-block;
+		width: 148px;
+		height: 45px;
+		background-size: 90%;
+		text-indent: -10000px;
+		padding: 15px 10px 14px;
+		top: 0;
+		position: absolute;
+	}
+
+/* Shift remaining navigation items over to allow room for added logo */
+	.ms-breadcrumb-top .ms-core-listMenu-horizontalBox ul.root ul.static {
+		margin-left: 170px;
+	}
+
+/* Nav item formatting */
+	.ms-breadcrumb-top .ms-core-listMenu-horizontalBox ul.root ul.static li {
+		border-right: 0.08em solid rgba(0, 0, 0, 0.05);
+	}
+
+/* Nav item text formatting */
+	.ms-breadcrumb-top .ms-core-listMenu-horizontalBox ul.root ul.static > li > a {
+		color: rgba(0, 0, 0, 0.3);
+		height: 1.75em;
+		padding: 2.5em 1em 0.2em;
+		transition: color 0.3s ease 0s, background-color 0.3s ease 0s;
+		margin-right: 0;
+		font-size: 1.2em;
+		border-right: 0;
+	}
+	.ms-breadcrumb-top .ms-core-listMenu-horizontalBox ul.root ul.static li a:hover,
+	.ms-breadcrumb-top .ms-core-listMenu-horizontalBox ul.root ul.static li a[href*="eBooks"]:hover {
+		background-color: #ffff66;
+		color: rgba(0, 0, 0, 0.6);
+	}
+
+/* Add mascot to eBooks nav item */
+	.ms-breadcrumb-top .ms-core-listMenu-horizontalBox ul.root ul.static li a[href*="eBooks"] {
+		background: url("http://classcdn.s3.amazonaws.com/images/smashmag-cody-mascot.png") no-repeat right 0.25em;
+		background-size: 2.25em auto;
+	}
+
+
+
+/* SEARCH  
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Search container positioning */
+	.ms-breadcrumb-box + div {
+		width: 35%;
+		display: inline-block;
+		float: right;
+		margin-top: 37px;
+	}
+
+/* Add text before search */
+	.ms-breadcrumb-box + div:before {
+		content: "Search on Smashing Magazine";
+		display: block;
+		padding-bottom: .55rem;
+	}
+
+/* Search box placement */
+	.ms-mpSearchBox.ms-floatRight {
+		float: none;
+		width: 100%;
+	}
+
+/* Change default border */
+	.ms-srch-sb-border,
+	.ms-srch-sb-border:hover,
+	.ms-srch-sb-borderFocused {
+		border: 0;
+		width: 100%;  /* Prevent click into search input from reducing in size */
+	}
+	.ms-srch-sb-border input:focus,
+	.ms-srch-sb-border input:hover,
+	.ms-srch-sb-border:hover {
+		border-color: #E9E9E9;
+	}
+
+/* Modify default formatting for input */
+	.ms-srch-sb > input {
+		width: 78%;
+		background: #fff;
+		margin: 0;
+		height: 40px;
+		padding: 0 .7rem;
+		box-sizing: border-box;
+		border-radius: .5rem 0 0 .5rem;
+		border: solid #E9E9E9;
+		border-width: 1px 0 1px 1px;
+	}
+
+/* Hide default Search icon */
+	.ms-srch-sb-searchImg {
+		display: none;
+	}
+
+/* New search button */
+	.ms-srch-sb > .ms-srch-sb-searchLink {
+		background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #e85c33 0px, #e53a2b 100%);
+		height: 40px;
+		padding: 0 .7rem;
+		box-sizing: border-box;
+		display: inline-block;
+		width: 22%;
+		border-radius: 0 .5rem .5rem 0;
+		border: solid #D74B22;
+		border-width: 1px 0 1px 1px;
+	}
+	.ms-srch-sb-searchLink:after {
+		content: "Search";
+		color: #fff;
+		width: 100%;
+		display: inline-block;
+		text-align: center;
+		padding: .35rem 0;
+	}
+	.ms-srch-sb-searchLink:hover:after {
+		text-decoration: none;
+	}
+
+
+
+/* NAVIGATION (BLOG CATEGORIES) 
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Category nav container */
+	#sideNavBox {
+		width: 165px;
+		margin: 0;
+	}
+
+/* Change OOTB SP Blog category nav width */
+	.ms-blog-listMenu-root {
+	 	width: auto;
+	}
+
+/* Blog category nav item formatting */
+	.ms-blog-listMenu-root li a {
+		padding: .5rem 2rem;
+		box-sizing: border-box;
+		transition: color 0.3s ease 0s, background-color 0.3s ease 0s;
+	}
+	.ms-blog-listMenu-root li a:hover {
+		background-color: #ffff66;
+		color: rgba(0, 0, 0, 0.6);
+	}
+
+/* Per category border shared properties */
+	.ms-blog-listMenu-root ul.static li {
+		border-width: 0 0 0 0.625rem;
+		border-style: solid;
+	} 
+
+/* Per category border */
+	.ms-blog-listMenu-root ul.static li:nth-child(1) {
+	 	border-color: #C9E9E5;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(1):hover{
+		border-color: #41b7d8;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(2) {
+		border-color: #CDEEAA;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(2):hover {
+		border-color: #6ece0a;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(3) {
+		border-color: #F9F0A8;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(3):hover {
+		border-color: #ebd203;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(4) {
+		border-color: #E0CFDF;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(4):hover {
+		border-color: #a675a2;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(5) {
+		border-color: #FACED2;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(5):hover {
+		border-color: #f0717c;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(6) {
+		border-color: #BCD8F0;
+	} 
+	.ms-blog-listMenu-root ul.static li:nth-child(6):hover {
+		border-color: #3e8dd2;
+	} 
+
+
+
+/* RIGHT WEB PART ZONE
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Web part container */
+	.ms-blog-LeftColumn .ms-webpartzone-cell {
+	    padding: 1rem;
+	}
+
+/* Alter web part formatting for every other web part */
+	.ms-blog-LeftColumn .ms-webpartzone-cell:nth-child(even) {
+		background: #F8F8F8;
+		border: solid rgba(0,0,0,.1);
+		border-width: 1px 1px 1px 0;
+		border-radius:  0 0.625em 0.625em 0;
+		box-shadow: inset 7px 0 5px -11px rgba(0,0,0,.1);
+		margin-left: 1px;
+	}
+
+
+
+/* BLOG POST
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Post container */
+	.ms-blog-postBody {
+		max-height: 12em;
+		position: relative;
+		margin-top: 3rem;
+	}
+
+/* Post separator */
+	.ms-blog-postList > li {
+		border-bottom: 0.312rem solid #41b7d8;
+		margin-bottom: 2rem;
+	}
+
+/* Post title container */
+	.ms-blog-postList h1 {
+		border-bottom: solid 1.5px rgba(0,0,0,0.1);
+		padding-bottom: 55px;
+		margin-bottom: 10px;
+	}
+
+/* Post title text */
+	.ms-blog-postList h1 a {
+		font-weight: bold;
+		color: #333;
+	}
+
+/* Post text blocks */
+	.ms-blog-postBody p {
+		margin: 20px 0;
+	}
+
+/* Call out text in first section of post */
+	.ms-blog-postBody .ms-rteStyle-Accent2 {
+		color: #333;
+	}
+
+/* Fade effect over teaser text */
+	.ms-blog-postBody:after {
+		content: "";
+		background: linear-gradient(to top, rgba(255,255,255,1) 10%,rgba(255,255,255,0) 50%);
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+	}
+
+/* Set positioning of parent for metadata relocation */
+	.ms-blog-postList li > div {
+		position: relative;
+	}
+
+/* Read More link after post teaser */
+	.ms-blog-postList h1 a:after {
+		content: "Read more...";
+		position: absolute;
+		bottom: -2.5rem;
+		left: 0;
+		background: #41B7D8;
+		border-radius: 0.3125rem;
+		margin: 2rem 0 0;
+		padding: 0.35rem 0.65rem;
+		color: #fff;
+		border: 1px solid #007394;
+		z-index: 2;
+	}
+
+/* Byline container */
+	.ms-blog-postBody ~ .ms-metadata > span > span {
+		text-transform: capitalize;
+		position: absolute;
+		bottom: 5rem;
+		color: #41B7D8;
+	}
+
+/* Byline */
+	.ms-blog-postBody ~ .ms-metadata .ms-subtleLink {
+		color: #41B7D8;
+		font-size: 1.5rem;
+		line-height: 1;
+	}
+	.ms-blog-postBody ~ .ms-metadata .ms-subtleLink:hover {
+		text-decoration: underline;
+	}
+
+/* Add "By" before byline */
+	.ms-blog-postBody ~ .ms-metadata .ms-subtleLink:before {
+		content: "By ";
+		color: #B2B2B2;
+		display: inline-block;
+		padding-right: .5rem;
+		line-height: 1.5;
+		overflow: visible;
+	}
+
+/* Tags container (also parent of byline container) */
+	.ms-blog-postBody ~ .ms-metadata > span {
+		position: absolute;
+		bottom: 12rem;
+	}
+
+/* Post footer */
+	.ms-blog-postBody ~ .ms-metadata {
+		margin-top: 4.5rem;
+	}
+
+/* Hide other text SharePoint inserts in metadata area */
+	.ms-metadata > span {
+		font-size: 0;
+	}
+
+/* Shared properties for inserted icons for post metadata */
+	.ms-blog-postList h1 + div:before, /* Date */
+	#blgcat:before, /* Tags */
+	.ms-blog-commandSpace > a:before, /* Comments */
+	.ms-blog-commandSpace a[id*="likes"]:before, /* Like */
+	.ms-blog-commandSpace a[title*="Email"]:before /* Email */ {
+		font-family: FontAwesome;
+		padding-right: .5rem;
+		color: #E43B2C;
+	}
+
+/* Date */
+	.ms-blog-postList h1 + div {
+		color: 	rgba(0,0,0,0.3);
+	}
+
+/* Date icon */
+	.ms-blog-postList h1 + div:before {
+		content: "\f017";
+	}
+
+/* Post tags */
+	#blgcat {
+		color: #41B7D8;
+		padding-right: .8rem;
+	}
+
+/* Add tags icon before tag */
+	#blgcat:before {
+		content: "\f02c";
+		display: inline-block;
+	} 
+
+/* Container for sub footer options (Comment, Like, Email and Edit) */
+	.ms-blog-commandSpace {
+		position: absolute;
+		bottom: 14.0125rem;
+		right: -1rem;
+		font-size: 1rem;
+	}
+
+/* Remove OOTB SharePoint border in metadata area */
+	.ms-blog-commandSpace .ms-comm-metalineItemSeparator {
+		border-right: 0;
+	}
+
+/* Comment Count */
+	.ms-blog-commandSpace > a {
+		color: #41B7D8;
+	}
+
+/* Add comments icon before comments */
+	.ms-blog-commandSpace > a:before {
+		content: "\f075";
+		display: inline-block;
+	}
+
+/* Like link */
+	.ms-blog-commandSpace a[id*="likes"] {
+		color: #41B7D8;
+	}
+	.ms-blog-commandSpace a[id*="likes"]:hover {
+		text-decoration: underline;
+	}
+
+/* Add heart icon before Like link */
+	.ms-blog-commandSpace a[id*="likes"]:before {
+		padding-right: .5rem;
+		display: inline-block;
+	}
+
+/* Email link */
+	.ms-blog-commandSpace a[title*="Email"] {
+		color: #41B7D8;
+		font-size: 0;
+		display: inline-block;
+		line-height: .8rem;
+	}
+
+/* Add share icon before Email text */
+	.ms-blog-commandSpace a[title*="Email"]:before {
+		content: "\f064";
+		display: inline-block;
+		font-size: 1rem;
+	}
+
+/* Replace 'Email a link' text with 'Email' */
+	.ms-blog-commandSpace a[title*="Email"]:after {
+		content: "Email";
+		font-size: .9rem;
+	}
+	.ms-blog-commandSpace a[title*="Email"]:hover:after {
+		text-decoration: underline;
+	}
+
+
+
+/* SOCIAL LINKS
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Hide parts of the links web part */
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell table .ms-pivotControl-container, /* Current view option */
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable thead /* Column title */ {
+	 	display: none;
+	}
+
+/* Disable OOTB link hover */
+	.ms-itmHoverEnabled:hover > * {
+	 	background: transparent;
+	}
+
+/* Move web part to top of page */
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody {
+		position: absolute;
+		top: 40px;
+		right: 38%;
+	}
+
+/* Convert to horizontal nav */
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody tr {
+		display: inline-block;
+	}
+
+/* Restrict size of link to only show icon */
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody a {
+		width: 15px;
+		height: 20px;
+		overflow: hidden;
+		display: inline-block;
+		text-decoration: none;
+	}
+
+/* Shared properties for inserted icons */
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody a:before {
+		font-family: FontAwesome;
+		font-size: 1rem;
+		padding-right: 30px;
+		opacity: 0.45;
+	} 
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody a:hover:before {
+		opacity: 1;
+	}
+
+/* Add social icons per link */
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody a[href*="/feed/"]:before {
+		content: "\f09e";
+		color: #FB8A24;
+	} 
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody a[href*="facebook"]:before {
+		content: "\f09a";
+		color: #1D679C;
+	}
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody a[href*="twitter"]:before {
+		content: "\f099";
+		color: #1BA7CB;
+	}
+	.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody a[href*="newsletter"]:before {
+		content: "\f0e0";
+		color: #C96B6B;
+	}
+
+
+
+/* RESPONSIVE DESIGN
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+/* Move blog category navigation to header area and shift social links placement  */
+@media screen and (min-width: 1020px) and (max-width: 1220px) {
+
+	/* Set widths for parent chain of elements for blog category nav */
+		#sideNavBox,
+		#sideNavBox div[id^="WebPart"],
+		#sideNavBox div[id^="WebPart"] > div,
+		#sideNavBox .ms-core-listMenu-verticalBox > ul.static > li,
+		#sideNavBox .ms-core-listMenu-verticalBox > ul.static > li > ul {
+		 	width: 100%;
+		}
+
+	/* Set positioning of parent for menu relocation */
+		#sideNavBox .ms-core-listMenu-verticalBox > ul.static > li {
+			position: relative;
+		}
+
+	/* Change border and padding for nav items */
+		#sideNavBox .ms-core-listMenu-verticalBox > ul.static > li > ul {
+			border-bottom: 0.3125em solid rgba(0, 0, 0, 0.06);
+			padding-left: 2.5rem;
+			box-sizing: border-box;
+		}
+
+	/* Convert blog category nav to horizontal bar */
+		#sideNavBox .ms-core-listMenu-verticalBox > ul.static > li > ul li {
+			display: inline-block;
+			height: 2.5em;
+		}
+
+	/* Blog category nav item formatting */
+		.ms-blog-listMenu-root ul.static li {
+			border-width: 0 0 0.3125em 0;
+			font-size: .8rem;
+			text-transform: uppercase;
+			font-weight: 500;
+			margin-bottom: -0.3125em;
+		}
+		.ms-blog-listMenu-root ul.static li a {
+			padding: .5em 1em;
+			border-right: 0.08em solid #e5e5e5;
+			height: 2rem;
+		}
+
+	/* Remove border on last nav item */
+		.ms-blog-listMenu-root ul.static li:last-child a {
+			border-right: 0;
+		}
+
+	/* Reset margin to absorb space left from moving blog category menu */
+		#contentBox {
+			margin-left: 2.5rem;
+		}
+
+	/* Shift placement of social links */
+		.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody {
+			right: 1rem;
+			top: 35px;
+		}
+}
+
+/* Shorten length of last category item */
+@media screen and (min-width: 1020px) and (max-width: 1124px) {
+	
+	/* Hide 'WordPress' category text and padding */	
+		.ms-blog-listMenu-root ul.static li:nth-child(6) {
+			font-size: 0;
+		}
+		.ms-blog-listMenu-root ul.static li:nth-child(6) a {
+			padding: 0;
+		}
+
+	/* Insert new text for 'WordPress' category text */
+		.ms-blog-listMenu-root ul.static li:nth-child(6) a:before {
+			content: "WP";
+			padding: .4rem 1rem .33em 1em;
+			font-size: 0.8rem;
+			display: inline-block;
+			border-width: 0 0 0.3125em 0;
+			border-style: solid;
+			border-color: #BCD8F0;
+			height: 1.425rem;
+		}
+
+	/* Add matching border */
+		.ms-blog-listMenu-root ul.static li:nth-child(6) a:hover:before {
+			border-color: #3e8dd2;
+		} 
+}
+
+/* Hide right web part zone, move search and move social links */
+@media screen and (max-width: 1020px) {
+
+	/* Hide right column */	
+		.ms-blog-LeftColumn {
+			display: none;
+		}
+
+	/* Reset content area formatting */
+		#contentRow {
+			width: 100%;
+			padding-top: 11rem;
+			margin-left: 0;
+			border-radius: 0;
+		}
+		#contentBox {
+			width: auto;
+		}
+
+	/* Search placement */
+		.ms-breadcrumb-box + div {
+			float: none;
+			margin-left: 3rem;
+			width: 90%;
+		}
+
+	/* Shift placement of social links */
+		.ms-blog-MainArea .ms-webpartzone-cell + .ms-webpartzone-cell .ms-listviewtable tbody {
+			right: 1rem;
+			top: 35px;
+		}
+}
